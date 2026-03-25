@@ -2,7 +2,7 @@
 A full-stack Institute Management System built using Flask, MySQL, and Docker, designed with a production-ready architecture using Gunicorn and Nginx.
 
 ## 🧱 Tech Stack
-Backend: Flask, SQLAlchemy
+Backend: Flask, SQLAlchemy </br>
 Database: MySQL (MariaDB)
 Web Server: Gunicorn
 Reverse Proxy: Nginx
