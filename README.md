@@ -2,20 +2,20 @@
 A full-stack Institute Management System built using Flask, MySQL, and Docker, designed with a production-ready architecture using Gunicorn and Nginx.
 
 ## 🧱 Tech Stack
-Backend: Flask, SQLAlchemy </br>
-Database: MySQL (MariaDB)
-Web Server: Gunicorn
-Reverse Proxy: Nginx
+Backend: Python, Flask, SQLAlchemy </br>
+Database: MySQL (MariaDB) </br>
+Web Server: Gunicorn </br>
+Reverse Proxy: Nginx </br>
 Containerization: Docker & Docker Compose
 
 ## 🏗️ Architecture
 Browser → Nginx → Gunicorn → Flask → MySQL
 
 ## ✨ Features
-User Authentication (Login / Signup)
-Student Management (CRUD)
-Department Management
-Attendance Tracking
+User Authentication (Login / Signup) </br>
+Student Management (CRUD) </br>
+Department Management </br>
+Attendance Tracking </br>
 Trigger Logs
 
 # ⚙️ How to Run (One Command)
@@ -27,7 +27,7 @@ Using git clone and repo URL
 ```
 ## 3 RUN
 ```bash 
-docker compose up --build
+docker compose up -d
 ```
 
 ## 🌐 Access App
