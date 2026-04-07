@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}
+Edit Student
+{% endblock title %}
+{% block hero_title %}
+Edit Student Record
+{% endblock hero_title %}
+{% block hero_subtitle %}
+Update academic, contact, and branch details without leaving the main workspace style.
+{% endblock hero_subtitle %}
+
+{% block body %}
+<section class="attendance-section">
+  <div class="attendance-shell">
+    <div class="attendance-panel attendance-form-panel" data-aos="fade-up">
+      <div class="attendance-header">
+        <div class="attendance-kicker">Record Update</div>
+        <h2>Edit Student Details</h2>
+        <p>Adjust the student profile below and save the latest version to keep records accurate.</p>
+      </div>
+
+      {% with messages=get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{message}}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      <form action="/edit/{{posts.id}}" method="post" class="attendance-form premium-student-form">
+        <div class="attendance-grid">
+          <div class="form-group">
+            <label for="rollno">Roll Number</label>
+            <input type="text" class="form-control" name="rollno" id="rollno" value="{{posts.rollno}}" required>
+          </div>
+          <div class="form-group">
+            <label for="sname">Student Name</label>
+            <input type="text" class="form-control" name="sname" id="sname" value="{{posts.sname}}" required>
+          </div>
+        </div>
+
+        <div class="attendance-grid">
+          <div class="form-group">
+            <label for="sem">Semester</label>
+            <input type="number" class="form-control" name="sem" id="sem" value="{{posts.sem}}" min="1" max="12" required>
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select class="form-control" id="gender" name="gender" required>
+              <option value="male" {% if posts.gender == 'male' %}selected{% endif %}>Male</option>
+              <option value="female" {% if posts.gender == 'female' %}selected{% endif %}>Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="branch">Branch</label>
+          <select class="form-control" id="branch" name="branch" required>
+            {% for d in dept %}
+            <option value="{{d.branch}}" {% if posts.branch == d.branch %}selected{% endif %}>{{d.branch}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="attendance-grid">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" id="email" value="{{posts.email}}" required>
+          </div>
+          <div class="form-group">
+            <label for="num">Phone Number</label>
+            <input type="text" class="form-control" name="num" id="num" value="{{posts.number}}" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea class="form-control" name="address" id="address" rows="3">{{posts.address}}</textarea>
+        </div>
+
+        <div class="premium-form-actions">
+          <a href="/studentdetails" class="btn btn-outline-secondary">Cancel</a>
+          <button type="submit" class="btn btn-gradient">Update Student</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="attendance-panel attendance-info-panel" data-aos="fade-up" data-aos-delay="120">
+      <div class="attendance-info-top">
+        <span class="attendance-info-badge">Live Record</span>
+        <h3>Update with confidence</h3>
+        <p>The edit screen now follows the same visual system as the rest of the app for a smoother workflow.</p>
+      </div>
+
+      <div class="attendance-stat-grid">
+        <div class="attendance-stat-card">
+          <span class="stat-label">Roll Number</span>
+          <strong>{{ posts.rollno }}</strong>
+          <small>Current record identifier</small>
+        </div>
+        <div class="attendance-stat-card">
+          <span class="stat-label">Semester</span>
+          <strong>{{ posts.sem }}</strong>
+          <small>Active academic term</small>
+        </div>
+        <div class="attendance-stat-card">
+          <span class="stat-label">Branch</span>
+          <strong>{{ posts.branch }}</strong>
+          <small>Assigned department</small>
+        </div>
+      </div>
+
+      <div class="attendance-tip-card">
+        <h4>Before Saving</h4>
+        <ul class="attendance-tips">
+          <li>Confirm branch and semester if attendance has already been recorded.</li>
+          <li>Keep roll numbers consistent to avoid duplicate records.</li>
+          <li>Use a valid email and current phone number for contact accuracy.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock body %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Department
+{% endblock title %}
+{% block hero_title %}
+Department Management
+{% endblock hero_title %}
+{% block hero_subtitle %}
+Create and maintain branch options with a cleaner, more consistent administrative layout.
+{% endblock hero_subtitle %}
+
+
+
+{% block body %}
+<section class="department-section">
+  <div class="department-card">
+    <div class="department-header">
+      <h2>Add New Department</h2>
+      <p>Create departments for students and branch allocation.</p>
+    </div>
+
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form action="/department" method="post" class="department-form">
+      <div class="form-group">
+        <label for="dept">Department Name</label>
+        <input type="text" class="form-control" name="dept" id="dept" placeholder="e.g. Computer Science" required>
+      </div>
+      <button type="submit" class="btn btn-gradient">Add Department</button>
+    </form>
+  </div>
+</section>
+{% endblock body %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+Triggers
+{% endblock title %}
+{% block hero_title %}
+Activity Records
+{% endblock hero_title %}
+{% block hero_subtitle %}
+Track insert, update, and delete events across student records with a cleaner audit view.
+{% endblock hero_subtitle %}
+
+{% block body %}
+<section class="premium-page-shell">
+  <div class="data-hero data-hero-alt" data-aos="fade-up">
+    <div>
+      <span class="section-kicker">Audit Trail</span>
+      <h2>Student Trigger Records</h2>
+      <p>A running log of student activity so changes are visible and easier to review.</p>
+    </div>
+    <div class="data-hero-actions">
+      <div class="dashboard-stat-card compact">
+        <span class="dashboard-label">Events</span>
+        <strong>{{ query|length }}</strong>
+      </div>
+      <a href="/studentdetails" class="btn btn-gradient">Open Directory</a>
+    </div>
+  </div>
+
+  {% with messages=get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    {{message}}
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  <div class="table-card" data-aos="fade-up" data-aos-delay="120">
+    <div class="table-card-head">
+      <h3>System Activity</h3>
+      <p>Each row captures the roll number, action performed, and timestamp from database triggers.</p>
+    </div>
+    <div class="table-responsive premium-table-wrap">
+      <table class="table student-details-table premium-table table-hover table-fit">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">TID</th>
+            <th scope="col">ROLL NUMBER</th>
+            <th scope="col">ACTION</th>
+            <th scope="col">TIMESTAMP</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for post in query %}
+          <tr>
+            <th scope="row">{{post.tid}}</th>
+            <td>{{post.rollno}}</td>
+            <td><span class="record-chip">{{post.action}}</span></td>
+            <td>{{post.timestamp}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock body %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Attendance
+{% endblock title %}
+{% block hero_title %}
+Attendance Workspace
+{% endblock hero_title %}
+{% block hero_subtitle %}
+Record, refresh, and verify attendance with the same premium workflow used across the system.
+{% endblock hero_subtitle %}
+
+
+
+{% block body %}
+<section class="attendance-section">
+  <div class="attendance-shell">
+    <div class="attendance-panel attendance-form-panel">
+      <div class="attendance-header">
+        <div class="attendance-kicker">Attendance Control</div>
+        <h2>Add Attendance Details</h2>
+        <p>Capture student attendance with a cleaner workflow for semester, branch, roll number, and percentage.</p>
+      </div>
+
+      {% with messages=get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{message}}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      <form action="/addattendance" method="post" class="attendance-form">
+        <div class="attendance-grid">
+          <div class="form-group">
+            <label for="sem">Semester</label>
+            <select class="form-control" id="sem" name="sem" required>
+              <option value="" selected disabled>Select Semester</option>
+              {% for s in sem_options %}
+              <option value="{{s}}">{{s}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="branch">Branch</label>
+            <select class="form-control" id="branch" name="branch" required>
+              <option value="" selected disabled>Select Branch</option>
+              {% for b in branch_options %}
+              <option value="{{b}}">{{b}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rollno">Roll Number</label>
+          <select class="form-control" id="rollno" name="rollno" required>
+            <option value="" selected disabled>Select RollNo</option>
+            {% for r in query %}
+            <option value="{{r.rollno}}">{{r.rollno}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="attend">Attendance Percentage</label>
+          <input type="number" class="form-control" name="attend" id="attend" min="0" max="100" placeholder="Enter value between 0 and 100" required>
+        </div>
+
+        <button type="submit" class="btn btn-gradient btn-block">Add Attendance</button>
+      </form>
+    </div>
+
+    <div class="attendance-panel attendance-info-panel">
+      <div class="attendance-info-top">
+        <span class="attendance-info-badge">Premium Workflow</span>
+        <h3>Keep Records Accurate</h3>
+        <p>Choose the student context first, then save attendance with a single clean action.</p>
+      </div>
+
+      <div class="attendance-stat-grid">
+        <div class="attendance-stat-card">
+          <span class="stat-label">Students</span>
+          <strong>{{ query|length }}</strong>
+          <small>Available for attendance entry</small>
+        </div>
+        <div class="attendance-stat-card">
+          <span class="stat-label">Semesters</span>
+          <strong>{{ sem_options|length }}</strong>
+          <small>Detected from student records</small>
+        </div>
+        <div class="attendance-stat-card">
+          <span class="stat-label">Branches</span>
+          <strong>{{ branch_options|length }}</strong>
+          <small>Ready for selection</small>
+        </div>
+      </div>
+
+      <div class="attendance-tip-card">
+        <h4>Quick Tips</h4>
+        <ul class="attendance-tips">
+          <li>Select the correct semester and branch before choosing the roll number.</li>
+          <li>Enter attendance as a percentage from 0 to 100.</li>
+          <li>Use Search after saving to verify what is stored for a student.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock body %}

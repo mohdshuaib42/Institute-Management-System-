@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}
+Dashboard
+{% endblock title %}
+{% block home %}
+menu-active
+{% endblock home %}
+{% block hero_title %}
+Institute Management Dashboard
+{% endblock hero_title %}
+{% block hero_subtitle %}
+One coordinated workspace for students, attendance, departments, records, and search.
+{% endblock hero_subtitle %}
+
+{% block body %}
+<section class="dashboard-shell">
+  <div class="dashboard-grid" data-aos="fade-up">
+    <a class="dashboard-stat-card" href="/studentdetails">
+      <span class="dashboard-label">Students</span>
+      <strong>{{ student_count }}</strong>
+      <p>Manage every registered student record.</p>
+    </a>
+    <a class="dashboard-stat-card" href="/addattendance">
+      <span class="dashboard-label">Attendance Logs</span>
+      <strong>{{ attendance_count }}</strong>
+      <p>Save and review the latest attendance values.</p>
+    </a>
+    <a class="dashboard-stat-card" href="/department">
+      <span class="dashboard-label">Departments</span>
+      <strong>{{ department_count }}</strong>
+      <p>Organize branches and academic structure.</p>
+    </a>
+    <a class="dashboard-stat-card" href="/triggers">
+      <span class="dashboard-label">Activity Records</span>
+      <strong>{{ trigger_count }}</strong>
+      <p>Track insert, update, and delete activity.</p>
+    </a>
+  </div>
+
+  <div class="dashboard-feature-grid" data-aos="fade-up" data-aos-delay="120">
+    <div class="feature-panel">
+      <div class="section-head">
+        <span class="section-kicker">Fast Actions</span>
+        <h3>Everything important is one click away</h3>
+      </div>
+      <div class="feature-actions">
+        <a href="/addstudent" class="feature-action-card">
+          <h4>Add Student</h4>
+          <p>Create a complete student profile with branch, semester, and contact details.</p>
+        </a>
+        <a href="/addattendance" class="feature-action-card">
+          <h4>Update Attendance</h4>
+          <p>Store the latest attendance value and keep records current.</p>
+        </a>
+        <a href="/search" class="feature-action-card">
+          <h4>Search Records</h4>
+          <p>Find a student quickly and verify details with attendance in one view.</p>
+        </a>
+        <a href="/studentdetails" class="feature-action-card">
+          <h4>Review Directory</h4>
+          <p>Open the student directory for edits, audits, and record management.</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="feature-panel feature-panel-accent">
+      <div class="section-head">
+        <span class="section-kicker">Workflow</span>
+        <h3>Built for a smooth admin routine</h3>
+      </div>
+      <ul class="premium-list">
+        <li>Add departments first so branch selection stays clean and consistent.</li>
+        <li>Create student profiles before recording attendance for a semester.</li>
+        <li>Use search to confirm the latest saved information in seconds.</li>
+        <li>Open records to review all system activity in a single audit trail.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock body %}

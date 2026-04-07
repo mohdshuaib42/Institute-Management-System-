@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}
+Search
+{% endblock title %}
+{% block hero_title %}
+Smart Student Search
+{% endblock hero_title %}
+{% block hero_subtitle %}
+Pull student information and the latest attendance view from one polished search screen.
+{% endblock hero_subtitle %}
+
+
+
+{% block body %}
+<section class="search-wrapper">
+  <div class="search-inner">
+    <div class="search-card">
+      <h3 class="search-title">Find Student Records</h3>
+      <p class="search-subtitle">Enter roll number to view details and attendance</p>
+
+      {% with messages=get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{message}}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      <form action="/search" method="post" class="search-form">
+        <div class="form-group">
+          <label for="roll">Roll Number</label>
+          <input type="text" class="form-control" name="roll" id="roll" placeholder="e.g. 228" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="sem">Semester</label>
+            <input type="number" class="form-control" name="sem" id="sem" min="1" max="12" placeholder="e.g. 1" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="branch">Branch</label>
+            <select class="form-control" id="branch" name="branch" required>
+              <option value="" selected disabled>Select Branch</option>
+              {% for d in dept %}
+              <option value="{{d.branch}}">{{d.branch}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-gradient btn-block">Search</button>
+      </form>
+    </div>
+
+    <div class="search-result-panel">
+      {% if bio %}
+      <div class="status-badge success">Data found</div>
+      <h4>Student Information</h4>
+      <div class="info-grid">
+        <div><span>Roll No</span> {{bio.rollno}}</div>
+        <div><span>Name</span> {{bio.sname}}</div>
+        <div><span>Sem</span> {{bio.sem}}</div>
+        <div><span>Gender</span> {{bio.gender}}</div>
+        <div><span>Branch</span> {{bio.branch}}</div>
+        <div><span>Email</span> {{bio.email}}</div>
+        <div><span>Number</span> {{bio.number}}</div>
+        <div class="wide"><span>Address</span> {{bio.address}}</div>
+      </div>
+      <div class="attendance-card">
+        <strong>Attendance:</strong>
+        {% if attend %}
+        <span class="attendance-value">{{attend.attendance}}%</span>
+        {% else %}
+        <span class="attendance-value">Not available</span>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="status-badge danger">No results</div>
+      <p class="empty-text">Try another roll number or check if student is registered.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock body %}
