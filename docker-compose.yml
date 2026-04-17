@@ -17,7 +17,7 @@ services:
       retries: 5
 
   app:
-    image: mohdshuaib42/institute-management
+    build: ./app
     container_name: flask_app
     depends_on:
       db:

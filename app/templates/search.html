@@ -32,7 +32,7 @@ Search
 
 <div class="form-group">
 <label for="attendance">Enter Your Roll Number</label>
-<input type="text" class="form-control" name="roll" id="roll" placeholder="Use Small Letter">
+<input type="text" class="form-control" name="roll" id="roll" placeholder="Use Small Letter" required>
 </div>
 <br>
 
@@ -45,7 +45,7 @@ Search
 
 
 <div class="col-md-8">
-{% if bio %}
+{% if searched and bio %}
 <br>
 <h3>Your Details</h3>
  <hr>
@@ -63,7 +63,7 @@ Search
   <hr>
   <li>Attendance : {{attend.attendance}}</li>
 <br><br>
-{% else %}
+{% elif searched %}
 No such results
 {% endif %}
 

@@ -97,6 +97,24 @@ class Student(db.Model):
     email=db.Column(db.String(50))
     number=db.Column(db.String(12))
     address=db.Column(db.String(100))
+
+
+def get_required_form_data(field_labels):
+    cleaned_data = {}
+    missing_fields = []
+
+    for field_name, field_label in field_labels.items():
+        value = (request.form.get(field_name) or "").strip()
+        cleaned_data[field_name] = value
+
+        if not value or value.lower().startswith("select "):
+            missing_fields.append(field_label)
+
+    return cleaned_data, missing_fields
+
+
+def flash_missing_fields(missing_fields):
+    flash(f"Please fill the {', '.join(missing_fields)}.", "warning")
     
 
 @app.route('/')
@@ -118,7 +136,14 @@ def triggers():
 @app.route('/department',methods=['POST','GET'])
 def department():
     if request.method=="POST":
-        dept=request.form.get('dept')
+        form_data, missing_fields = get_required_form_data({
+            'dept': 'department'
+        })
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('department.html')
+
+        dept = form_data['dept']
         query=Department.query.filter_by(branch=dept).first()
         if query:
             flash("Department Already Exist","warning")
@@ -134,8 +159,16 @@ def addattendance():
     # query=db.engine.execute(f"SELECT * FROM `student`") 
     query=Student.query.all()
     if request.method=="POST":
-        rollno=request.form.get('rollno')
-        attend=request.form.get('attend')
+        form_data, missing_fields = get_required_form_data({
+            'rollno': 'roll number',
+            'attend': 'attendance percentage'
+        })
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('attendance.html',query=query)
+
+        rollno = form_data['rollno']
+        attend = form_data['attend']
         print(attend,rollno)
         atte=Attendence(rollno=rollno,attendance=attend)
         db.session.add(atte)
@@ -148,12 +181,19 @@ def addattendance():
 @app.route('/search',methods=['POST','GET'])
 def search():
     if request.method=="POST":
-        rollno=request.form.get('roll')
+        form_data, missing_fields = get_required_form_data({
+            'roll': 'roll number'
+        })
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('search.html', searched=False)
+
+        rollno = form_data['roll']
         bio=Student.query.filter_by(rollno=rollno).first()
         attend=Attendence.query.filter_by(rollno=rollno).first()
-        return render_template('search.html',bio=bio,attend=attend)
+        return render_template('search.html',bio=bio,attend=attend, searched=True)
         
-    return render_template('search.html')
+    return render_template('search.html', searched=False)
 
 @app.route("/delete/<string:id>",methods=['POST','GET'])
 @login_required
@@ -171,16 +211,38 @@ def delete(id):
 def edit(id):
     # dept=db.engine.execute("SELECT * FROM `department`")    
     if request.method=="POST":
-        rollno=request.form.get('rollno')
-        sname=request.form.get('sname')
-        sem=request.form.get('sem')
-        gender=request.form.get('gender')
-        branch=request.form.get('branch')
-        email=request.form.get('email')
-        num=request.form.get('num')
-        address=request.form.get('address')
-        # query=db.engine.execute(f"UPDATE `student` SET `rollno`='{rollno}',`sname`='{sname}',`sem`='{sem}',`gender`='{gender}',`branch`='{branch}',`email`='{email}',`number`='{num}',`address`='{address}'")
+        form_data, missing_fields = get_required_form_data({
+            'rollno': 'roll number',
+            'sname': 'student name',
+            'sem': 'semester',
+            'gender': 'gender',
+            'branch': 'branch',
+            'email': 'email',
+            'num': 'phone number',
+            'address': 'address'
+        })
         post=Student.query.filter_by(id=id).first()
+        dept=Department.query.all()
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('edit.html',posts=post,dept=dept)
+
+        rollno = form_data['rollno']
+        sname = form_data['sname']
+        sem = form_data['sem']
+        gender = form_data['gender']
+        branch = form_data['branch']
+        email = form_data['email']
+        num = form_data['num']
+        address = form_data['address']
+        duplicate_student = Student.query.filter(
+            Student.rollno == rollno,
+            Student.id != id
+        ).first()
+        if duplicate_student:
+            flash("Roll number already exists", "warning")
+            return render_template('edit.html',posts=post,dept=dept)
+        # query=db.engine.execute(f"UPDATE `student` SET `rollno`='{rollno}',`sname`='{sname}',`sem`='{sem}',`gender`='{gender}',`branch`='{branch}',`email`='{email}',`number`='{num}',`address`='{address}'")
         post.rollno=rollno
         post.sname=sname
         post.sem=sem
@@ -200,13 +262,22 @@ def edit(id):
 @app.route('/signup',methods=['POST','GET'])
 def signup():
     if request.method == "POST":
-        username=request.form.get('username')
-        email=request.form.get('email')
-        password=request.form.get('password')
+        form_data, missing_fields = get_required_form_data({
+            'username': 'username',
+            'email': 'email',
+            'password': 'password'
+        })
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('signup.html')
+
+        username = form_data['username']
+        email = form_data['email']
+        password = form_data['password']
         user=User.query.filter_by(email=email).first()
         if user:
             flash("Email Already Exist","warning")
-            return render_template('/signup.html')
+            return render_template('signup.html')
         # encpassword=generate_password_hash(password)
 
         # new_user=db.engine.execute(f"INSERT INTO `user` (`username`,`email`,`password`) VALUES ('{username}','{email}','{encpassword}')")
@@ -225,8 +296,16 @@ def signup():
 @app.route('/login',methods=['POST','GET'])
 def login():
     if request.method == "POST":
-        email=request.form.get('email')
-        password=request.form.get('password')
+        form_data, missing_fields = get_required_form_data({
+            'email': 'email',
+            'password': 'password'
+        })
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('login.html')
+
+        email = form_data['email']
+        password = form_data['password']
         user=User.query.filter_by(email=email).first()
 
         # if user and check_password_hash(user.password,password):
@@ -255,14 +334,32 @@ def addstudent():
     # dept=db.engine.execute("SELECT * FROM `department`")
     dept=Department.query.all()
     if request.method=="POST":
-        rollno=request.form.get('rollno')
-        sname=request.form.get('sname')
-        sem=request.form.get('sem')
-        gender=request.form.get('gender')
-        branch=request.form.get('branch')
-        email=request.form.get('email')
-        num=request.form.get('num')
-        address=request.form.get('address')
+        form_data, missing_fields = get_required_form_data({
+            'rollno': 'roll number',
+            'sname': 'student name',
+            'sem': 'semester',
+            'gender': 'gender',
+            'branch': 'branch',
+            'email': 'email',
+            'num': 'phone number',
+            'address': 'address'
+        })
+        if missing_fields:
+            flash_missing_fields(missing_fields)
+            return render_template('student.html',dept=dept)
+
+        rollno = form_data['rollno']
+        sname = form_data['sname']
+        sem = form_data['sem']
+        gender = form_data['gender']
+        branch = form_data['branch']
+        email = form_data['email']
+        num = form_data['num']
+        address = form_data['address']
+        existing_student = Student.query.filter_by(rollno=rollno).first()
+        if existing_student:
+            flash("Roll number already exists", "warning")
+            return render_template('student.html',dept=dept)
         # query=db.engine.execute(f"INSERT INTO `student` (`rollno`,`sname`,`sem`,`gender`,`branch`,`email`,`number`,`address`) VALUES ('{rollno}','{sname}','{sem}','{gender}','{branch}','{email}','{num}','{address}')")
         query=Student(rollno=rollno,sname=sname,sem=sem,gender=gender,branch=branch,email=email,number=num,address=address)
         db.session.add(query)

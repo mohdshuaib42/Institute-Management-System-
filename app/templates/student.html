@@ -32,24 +32,24 @@ Add Students
 <div class="form-group">
 
 <label for="rollno">Roll Number</label>
-<input type="text" class="form-control" name="rollno" id="rollno">
+<input type="text" class="form-control" name="rollno" id="rollno" required>
 </div>
 <br>
 <div class="form-group">
 
 <label for="sname">Student Name</label>
-<input type="text" class="form-control" name="sname" id="sname">
+<input type="text" class="form-control" name="sname" id="sname" required>
 </div>
 <br>
 <div class="form-group">
 
 <label for="sem">Sem</label>
-<input type="number" class="form-control" name="sem" id="sem">
+<input type="number" class="form-control" name="sem" id="sem" required>
 </div>
 <br>
 <div class="form-group">                          
 <select  class="form-control" id="gender" name="gender"  required>
-        <option selected>Select Gender</option>
+        <option value="" selected disabled>Select Gender</option>
     
         <option value="male">Male</option>
         <option value="female">Female</option>
@@ -60,7 +60,7 @@ Add Students
 
 <div class="form-group">                          
 <select class="form-control" id="branch" name="branch"  required>
-        <option selected>Select Branch</option>
+        <option value="" selected disabled>Select Branch</option>
         {% for d in dept  %}
         <option value="{{d.branch}}">{{d.branch}}</option>
         {% endfor %}
@@ -70,18 +70,18 @@ Add Students
 <div class="form-group">
 
 <label for="email">Email</label>
-<input type="email" class="form-control" name="email" id="email">
+<input type="email" class="form-control" name="email" id="email" required>
 </div>
 <br>
 <div class="form-group">
 <label for="num">Phone Number</label>
-<input type="number" class="form-control" name="num" id="num">
+<input type="number" class="form-control" name="num" id="num" required>
 </div>
 <br>
 
 <div class="form-group">
 <label for="address">Address</label>
-<textarea class="form-control" name="address" id="address"></textarea>
+<textarea class="form-control" name="address" id="address" required></textarea>
 </div>
 <br>
   

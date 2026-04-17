@@ -32,7 +32,7 @@ Add Attendance
 
 <div class="form-group">                          
 <select class="form-control" id="rollno" name="rollno"  required>
-        <option selected>Select RollNo</option>
+        <option value="" selected disabled>Select RollNo</option>
         {% for r in query  %}
         <option value="{{r.rollno}}">{{r.rollno}}</option>
         {% endfor %}
@@ -42,7 +42,7 @@ Add Attendance
 
 <div class="form-group">
 <label for="attendance">Attendance Percentage</label>
-<input type="number" class="form-control" name="attend" id="attend">
+<input type="number" class="form-control" name="attend" id="attend" required>
 </div>
 <br>
 

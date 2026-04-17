@@ -39,23 +39,23 @@
 <div class="form-group">
 
 <label for="rollno">Roll Number</label>
-<input type="text" class="form-control" name="rollno" id="rollno" value={{posts.rollno}} >
+<input type="text" class="form-control" name="rollno" id="rollno" value={{posts.rollno}} required>
 </div>
 <br>
 <div class="form-group">
 
 <label for="sname">Student Name</label>
-<input type="text" class="form-control" name="sname" id="sname" value={{posts.sname}} >
+<input type="text" class="form-control" name="sname" id="sname" value={{posts.sname}} required>
 </div>
 <br>
 <div class="form-group">
 
 <label for="sem">Sem</label>
-<input type="number" class="form-control" name="sem" id="sem" value={{posts.sem}} >
+<input type="number" class="form-control" name="sem" id="sem" value={{posts.sem}} required>
 </div>
 <br>
 <div class="form-group">                          
-<select  class="form-control" id="gender" name="gender"   required>
+<select  class="form-control" id="gender" name="gender" required>
         <option selected>{{posts.gender}}</option>
     
         <option value="male">Male</option>
@@ -66,7 +66,7 @@
 <br>
 
 <div class="form-group">                          
-<select class="form-control" id="branch" name="branch"   required>
+<select class="form-control" id="branch" name="branch" required>
         <option selected>{{posts.branch}}</option>
         {% for d in dept  %}
         <option value="{{d.branch}}">{{d.branch}}</option>
@@ -77,18 +77,18 @@
 <div class="form-group">
 
 <label for="email">Email</label>
-<input type="email" class="form-control" name="email" id="email" value={{posts.email}} >
+<input type="email" class="form-control" name="email" id="email" value={{posts.email}} required>
 </div>
 <br>
 <div class="form-group">
 <label for="num">Phone Number</label>
-<input type="number" class="form-control" name="num" id="num" value={{posts.number}} >
+<input type="number" class="form-control" name="num" id="num" value={{posts.number}} required>
 </div>
 <br>
 
 <div class="form-group">
 <label for="address">Address</label>
-<input type="text"class="form-control" name="address" id="address" value={{posts.address}}>
+<input type="text"class="form-control" name="address" id="address" value={{posts.address}} required>
 </div>
 <br>
   
